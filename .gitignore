@@ -3,6 +3,8 @@ logs
 *.log
 npm-debug.log*
 
+.DS_Dtore
+
 # Runtime data
 pids
 *.pid

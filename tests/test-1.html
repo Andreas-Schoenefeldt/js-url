@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<title>Js URL Test</title>
+	</head>
+	<body>
+		<p><strong>Testing Url</strong></p>
+		<div id="test-1"></div>
+		<div id="test-2"></div>
+		<div id="test-3"></div>
+		<div id="test-4"></div>
+		
+		<script src="require.js"></script>
+		<script>
+			require.config({
+				  baseUrl: ""
+				
+				, map: {
+					  // '*' means all modules will get 'jquery-private'
+					  // for their 'jquery' dependency.
+					  '*': { 'jquery': 'jquery-private' },
+
+					  // 'jquery-private' wants the real jQuery module
+					  // though. If this line was not here, there would
+					  // be an unresolvable cyclic dependency.
+					  'jquery-private': { 'jquery': 'jquery'}
+					}
+				
+				, shim : {
+						  'jquery-private': { exports: 'jQuery' }
+					}
+				
+			});
+		</script>
+		<script src="test.js"></script>
+	</body>
+</html>

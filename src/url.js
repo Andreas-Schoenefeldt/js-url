@@ -7,7 +7,7 @@ define(function(){
 	var URL = function(url){
 		
 		// mnification optimizations - can we break 1kb?
-		var PATHNAME = 'pathname',
+		var PATHNAME = 'path',
 			PARAMETERS = 'parameters',
 		  	BASE_URL = 'baseURL',
 			URL_BODY = 'urlBody',
@@ -45,7 +45,7 @@ define(function(){
 
 		that.isRelative = split[0].substr(0,4) != 'http';
 		
-		that.protocol = that.isRelative ? window.location.protocol : split.shift();
+		that.protocol = that.isRelative ? window.location.protocol : split.shift().replace(':', '');
 		if(! that.isRelative) split.shift(); // getting rid of the empty entry in the array
 		that.host = that.isRelative ? window.location.host : split.shift(); 
 		that[PATHNAME] = split.join('/');

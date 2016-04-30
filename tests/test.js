@@ -1,8 +1,10 @@
 'use strict';
 require(['jquery', '../dist/url'], function($, URL) {
 	
-	var url = new URL('https://amazing.org/some/path/index.php#jump-link');
+	var url = new URL('https://www.amazing.org/some/path/index.php#jump-link');
 	var url2 = url.clone();
+	
+	$('#test-0').html('Current Url: <b>' + url.toString() + '</b><br/>Protocoll: ' + url.protocol + '<br/>Host: ' + url.host + '<br/>Path: ' + url.path  + '<br/>Hash: ' + url.hash);
 	
 	$('#test-1').html('Current Url: <b>' + url.toString() + '</b>');
 	

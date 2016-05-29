@@ -12,8 +12,26 @@ define(function(){
 		  	BASE_URL = 'baseURL',
 			URL_BODY = 'urlBody',
 			HASH = 'hash',
+			HOST = 'host',
 		
-			that = this
+			that = this,
+			
+			normalizeParameters = function(){
+				var res = [], sortedParams = {}, p, i;
+				for(p in that[PARAMETERS]){
+					res.push(p);
+				}
+				
+				res.sort();
+				for(i = 0; i < res.length; i++) {
+					p = res[i];
+					sortedParams[p] = that[PARAMETERS][p];
+				}
+				
+				that[PARAMETERS] = sortedParams;
+				
+				return that;
+			}
 		;
 		
 		if (! url) url = window.location.href;
@@ -39,6 +57,9 @@ define(function(){
 				var cStr = new String(params[cnt]).split('=');
 				that[PARAMETERS][cStr[0]] = decodeURIComponent(cStr[1]);
 			}
+			
+			// let's normalize the map
+			normalizeParameters();
 		}
 		
 		split = that[URL_BODY].split('/');
@@ -47,10 +68,11 @@ define(function(){
 		
 		that.protocol = that.isRelative ? window.location.protocol : split.shift().replace(':', '');
 		if(! that.isRelative) split.shift(); // getting rid of the empty entry in the array
-		that.host = that.isRelative ? window.location.host : split.shift(); 
+		that[HOST] = that.isRelative ? window.location[HOST] : split.shift(); 
 		that[PATHNAME] = split.join('/');
 		if (! that[PATHNAME].substr(0,1) == '/') that[PATHNAME] = '/' + that[PATHNAME];
 		
+		// -------- public functions ------------------
 		
 		that.setHash = function(newHash) { that[HASH] = newHash; return that; };
 		that.getHash = function() { return that[HASH]; };
@@ -73,7 +95,9 @@ define(function(){
 		that.addParameter = function (name, value) {
 			
 			if (name && value ) {
+				var normalize = that[PARAMETERS][name] === undefined;
 				that[PARAMETERS][name] = value;
+				if (normalize) normalizeParameters();
 			}
 			return that;
 		};
@@ -112,12 +136,37 @@ define(function(){
 		};
 		
 		that.isInternalURL = function(){
-			return window.location.host == that.host;
+			return window.location.host == that[HOST];
 		};
 		
 		that.clone = function(){
 			return new URL(that.toString());
 		};
+		
+		/**
+		 *	Copares the current with another url
+		 *	@param url	Takes a url object as input in order to compare it
+		 */
+		that.isSameUrlAs = function(url) {
+			if (that[HOST] == url[HOST]){
+				if (that[PATHNAME] == url[PATHNAME]){
+					if(that.getParameterString() == url.getParameterString()){
+						return true;
+					}
+				}
+			}
+			
+			return false;
+		};
+			
+		that.getParameterString = function(){
+			var res = [], p;
+			
+			for (p in that[PARAMETERS]){
+				res.push(p + '=' + encodeURIComponent(that[PARAMETERS][p]));
+			}
+			return res.join('&');
+		};	
 		
 		// Creates a proper URL String expression of this object
 		//
@@ -126,12 +175,7 @@ define(function(){
 			var url = that[URL_BODY];
 			
 			if (that.hasParameters()){
-				var first = true, p;
-				for (p in that[PARAMETERS]){
-					url += (first) ? '?' : '&';
-					url += p + '=' + encodeURIComponent(that[PARAMETERS][p]);
-					first = false;
-				}
+				url += '?' + that.getParameterString(); 
 			}
 			
 			if (!excludeHash && that[HASH]) {

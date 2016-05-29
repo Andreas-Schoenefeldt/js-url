@@ -148,7 +148,7 @@ define(function(){
 		 *	@param url	Takes a url object as input in order to compare it
 		 */
 		that.isSameUrlAs = function(url) {
-			if (that[HOST] == url[HOST]){
+			if (url && that[HOST] == url[HOST]){
 				if (that[PATHNAME] == url[PATHNAME]){
 					if(that.getParameterString() == url.getParameterString()){
 						return true;

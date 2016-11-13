@@ -4,7 +4,7 @@ Provides basic url handling and allows to simply work with urls without juggling
 ## installation
 
 ```
-bower install -S js-url
+bower install -S js-handy-url
 ```
 
 ## usage

@@ -1,6 +1,14 @@
 # js-url
 Provides basic url handling and allows to simply work with urls without juggling all the time with regular expressions. If the class is initialised without an url parameter, it will take the current URL.
 
+## installation
+
+```
+bower install -S js-url
+```
+
+## usage
+
 You can simply use it like this:
 
 ```js

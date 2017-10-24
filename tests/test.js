@@ -1,6 +1,22 @@
-'use strict';
-require(['jquery', '../dist/url'], function($, URL) {
-	
+(function (factory) {
+    'use strict';
+
+    // https://github.com/umdjs/umd/blob/master/returnExports.js
+    if (typeof module === 'object' && module.exports) {
+        // Node
+        factory(require('jquery'), require('../dist/url'));
+    } else if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        require(['jquery', '../dist/url'], factory);
+    } else {
+        // Browser globals (root is window)
+        factory(jQuery, URL);
+    }
+
+}(function($, URL) {
+
+	console.log(URL);
+
 	var url = new URL('https://www.amazing.org/some/path/index.php?omahhung=karmapa#jump-link');
 	var url2 = url.clone();
 	
@@ -19,4 +35,4 @@ require(['jquery', '../dist/url'], function($, URL) {
 	$('#test-4').html('Clone: <b>' + url2.clone() + '</b>');
 	
 	$('#test-5').html('Compare: <b>' + url.toString() + ' is same url as https://www.amazing.org/some/path/index.php?omahhung=karmapa&amazing=awsome%20!#different-jump-link: ' + (url.isSameUrlAs(new URL('https://www.amazing.org/some/path/index.php?omahhung=karmapa&amazing=awsome%20!#different-jump-link')) ? '<span class="success">yes</span>' : '<span class="error">no</span>') + ' </b>');
-});
+}));

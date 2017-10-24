@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 	var repository = {
 		  name: "js-handy-url"
 		, description: "Provides basic url handling and allows to simply work with urls without juggling all the time with regular expressions. If the class is initialised without an url parameter, it will take the current URL."
-		, version: "1.0.3" // The current Version
+		, version: "1.0.4" // The current Version
 		, license : 'MIT'
 		, authors: [
 			"Andreas Schönefeldt <schoenefeldt.andreas@gmail.com>"

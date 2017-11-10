@@ -29,3 +29,8 @@ define(['js-url'], function(URL)) {
   var urlstring = url.toString();
   
 }
+
+## tests
+```
+npm test
+```

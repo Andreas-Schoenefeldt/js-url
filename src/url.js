@@ -43,7 +43,7 @@
             }
         ;
 
-        if (! url) url = window.location.href;
+        if (! url) url = (typeof window !== 'undefined' ? window.location.href : '');
         url = url.replace(/\+/gi, ' '); // replace + with a ' '
 
         that[PARAMETERS] = {};
@@ -75,11 +75,12 @@
 
         that.isRelative = split[0].substr(0,4) !== 'http';
 
-        that.protocol = that.isRelative ? window.location.protocol : split.shift().replace(':', '');
+        that.protocol = that.isRelative ? (typeof window !== 'undefined' ? window.location.protocol : '') : split.shift().replace(':', '');
         if(! that.isRelative) split.shift(); // getting rid of the empty entry in the array
-        that[HOST] = that.isRelative ? window.location[HOST] : split.shift();
+        that[HOST] = that.isRelative ? (typeof window !== 'undefined' ? window.location[HOST] : '') : split.shift();
+
         that[PATHNAME] = split.join('/');
-        if (!that[PATHNAME].substr(0,1) === '/') {
+        if (!that.isRelative && that[PATHNAME].substr(0,1) !== '/') {
             that[PATHNAME] = '/' + that[PATHNAME];
         }
 
@@ -147,7 +148,7 @@
         };
 
         that.isInternalURL = function(){
-            return window.location.host == that[HOST];
+            return (typeof window !== 'undefined' ? window.location.host : '') === that[HOST];
         };
 
         that.clone = function(){

@@ -1,7 +1,7 @@
 {
   "name": "js-handy-url",
   "description": "Provides basic url handling and allows to simply work with urls without juggling all the time with regular expressions. If the class is initialised without an url parameter, it will take the current URL.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "repository": "https://github.com/Andreas-Schoenefeldt/js-url.git",
   "scripts": {
     "test": "mocha --reporter spec"

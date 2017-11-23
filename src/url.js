@@ -22,6 +22,9 @@
             URL_BODY = 'urlBody',
             HASH = 'hash',
             HOST = 'host',
+            PROTOCOL = 'protocol',
+
+            isRelative,
 
             that = this,
 
@@ -73,14 +76,14 @@
 
         split = that[URL_BODY].split('/');
 
-        that.isRelative = split[0].substr(0,4) !== 'http';
+        isRelative = split[0].substr(0,4) !== 'http';
 
-        that.protocol = that.isRelative ? (typeof window !== 'undefined' ? window.location.protocol : '') : split.shift().replace(':', '');
-        if(! that.isRelative) split.shift(); // getting rid of the empty entry in the array
-        that[HOST] = that.isRelative ? (typeof window !== 'undefined' ? window.location[HOST] : '') : split.shift();
+        that[PROTOCOL] = isRelative ? (typeof window !== 'undefined' ? window.location[PROTOCOL] : 'http') : split.shift().replace(':', '');
+        if(!isRelative) split.shift(); // getting rid of the empty entry in the array
+        that[HOST] = isRelative ? (typeof window !== 'undefined' ? window.location[HOST] : 'localhost') : split.shift();
 
         that[PATHNAME] = split.join('/');
-        if (!that.isRelative && that[PATHNAME].substr(0,1) !== '/') {
+        if (!isRelative && that[PATHNAME].substr(0,1) !== '/') {
             that[PATHNAME] = '/' + that[PATHNAME];
         }
 
@@ -126,14 +129,28 @@
             return that;
         };
 
-        that.makeRelative = function(){ // throws away the host and the protocoll and also index.html, if it is in the end
+        that.makeRelative = function(){ // throws away the host and the protocol and also index.html, if it is in the end
 
-            if (that[URL_BODY].substr(0,4) == 'http') {
+            if (!isRelative) {
                 that[URL_BODY] = that[URL_BODY].replace(/^(?:\/\/|[^\/]+)*\//, "/");
+                isRelative = true;
             }
 
             that[URL_BODY] = that[URL_BODY].replace('index.html', ''); // remove the index.html, because it should never appear in the menu bar
             // that[HASH] = null;
+
+            return that;
+        };
+
+        /**
+         * Makes the URL absolute
+         * @returns {URL}
+         */
+        that.makeAbsolute = function(){
+            if (isRelative) {
+                that[URL_BODY] = that[PROTOCOL] + '://' + that[HOST] + (that[URL_BODY].slice(-1) != '/' ? '/' : '') +  that[URL_BODY];
+                isRelative = false;
+            }
 
             return that;
         };

@@ -43,7 +43,14 @@ describe('URL API', function () {
 
     it('should compare without taking the hash into account', function() {
         assert.equal(true, url.isSameUrlAs(new URL('https://www.amazing.org/some/path/index.php?omahhung=karmapa&amazing=awsome%20!#different-jump-link')));
-    })
+    });
+
+    it('should make relative urls absolute on demand', function() {
+        var url = new URL('some/path.php');
+        var url2 = new URL('some/path.php');
+        assert.equal('http://localhost/some/path.php', url.makeAbsolute().toString());
+        assert.equal('http://localhost/some/path.php', url2.makeAbsolute().toString());
+    });
 
 });
 

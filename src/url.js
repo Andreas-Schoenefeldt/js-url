@@ -148,7 +148,7 @@
          */
         that.makeAbsolute = function(){
             if (isRelative) {
-                that[URL_BODY] = that[PROTOCOL] + '://' + that[HOST] + (that[URL_BODY].slice(-1) != '/' ? '/' : '') +  that[URL_BODY];
+                that[URL_BODY] = that[PROTOCOL] + '://' + that[HOST] + (that[URL_BODY].substr(0, 1) !== '/' ? '/' : '') +  that[URL_BODY];
                 isRelative = false;
             }
 

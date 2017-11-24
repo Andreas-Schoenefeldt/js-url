@@ -78,7 +78,7 @@
 
         isRelative = split[0].substr(0,4) !== 'http';
 
-        that[PROTOCOL] = isRelative ? (typeof window !== 'undefined' ? window.location[PROTOCOL] : 'http') : split.shift().replace(':', '');
+        that[PROTOCOL] = (isRelative ? (typeof window !== 'undefined' ? window.location[PROTOCOL] : 'http:') : split.shift()).replace(':', '');
         if(!isRelative) split.shift(); // getting rid of the empty entry in the array
         that[HOST] = isRelative ? (typeof window !== 'undefined' ? window.location[HOST] : 'localhost') : split.shift();
 

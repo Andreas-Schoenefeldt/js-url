@@ -53,5 +53,10 @@ describe('URL API', function () {
         assert.equal('http://localhost/some/path.php', url2.makeAbsolute().toString());
     });
 
+    it('should decode the hash', function() {
+        var url = new URL('https://www.amazing.org/some/path/index.php?omahhung=karmapa#open:%20#hot2%20a');
+        assert.equal('open: #hot2 a', url.getHash());
+    })
+
 });
 

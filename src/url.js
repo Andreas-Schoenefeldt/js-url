@@ -54,10 +54,12 @@
 
         // get the hash
         var split = url.split('#');
-        that[HASH] = (split.length > 1) ? split[1] : null;
+        var urlWithoutHash = split.shift();
+
+        that[HASH] = (split.length > 0) ? decodeURIComponent(split.join('#')) : null;
 
         // get the body
-        split = split[0].split('?');
+        split = urlWithoutHash.split('?');
         that[URL_BODY] = split[0];
 
         // split the parameters

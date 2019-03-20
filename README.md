@@ -8,7 +8,7 @@ bower install -S js-handy-url
 ```
 
 ```
-npm install ja-handy-url
+npm install js-handy-url
 ```
 
 ## usage
